@@ -23,7 +23,7 @@ const Layout = ({ children,rightElement }: {
         });
     }, []);
     const handleMinimize = () => {
-        window.ipc.send('minimize-window', null);
+        window.ipc.send('minimizeWindow', null);
     };
 
     const handleClose = () => {

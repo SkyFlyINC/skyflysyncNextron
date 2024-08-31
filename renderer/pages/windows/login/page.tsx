@@ -31,7 +31,7 @@ export default function Home() {
     };
 
     useEffect(() => {
-        // Setup IPCRenderer to send messages to Electron
+
     }, []);
 
     const card = (
@@ -75,12 +75,11 @@ export default function Home() {
                         />
                         <Stack sx={{ width: '90%', m: 2 }} direction="column" spacing={1}>
                             <Button onClick={() => {
-                                window.ipc.send('nextjs-message', {
+                                window.ipc.send('nextjsMessage', {
                                     command: "register",
                                     content: {
                                         userName: selectedClass,
-                                        userPassword: password,
-                                        deviceType: 1
+                                        password: password,
                                     }
                                 })
                             }} size="large" variant="contained">登录</Button>

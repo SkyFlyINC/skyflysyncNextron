@@ -1,28 +1,23 @@
 // pages/Schedule.js
 'use client'
-import React, {SetStateAction, useEffect, useState} from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import { Card, Steps} from 'antd';
+import { Card, Steps } from 'antd';
+import { ClientPacks } from '../../../types';
 
 const { Step } = Steps
 const Schedule = () => {
-    const [scheduleData,setSchedule] = useState([
+    const [scheduleData, setSchedule] = useState([
     ]);
-    const [currentClass,setCurrentClass] = useState(0);
+    const [currentClass, setCurrentClass] = useState(0);
     useEffect(() => {
-        window.ipc.on('updateClasses',(msg:{classList})=>{
-            if(msg.classList){
-                setSchedule(msg.classList);
+        window.ipc.on('updateClasses', (msg: ClientPacks.ClassUpdateMessage) => {
 
+            if (msg.classList) {
+                setSchedule(msg.classList);
             }
         })
-        window.ipc.on('updateCurrentClass',(msg:SetStateAction<number>)=>{
+        window.ipc.on('updateCurrentClass', (msg: SetStateAction<number>) => {
             setCurrentClass(msg)
         })
     }, []);
@@ -31,14 +26,14 @@ const Schedule = () => {
     const todayEvents = scheduleData.map(event => ({ ...event, date: today }));
 
     return (
-            <Card style={{ width: 130 }}>
-                <Steps size={todayEvents.length>11?'small':'default'} progressDot current={currentClass} direction="vertical">
+        <Card style={{ width: 130 }}>
+            <Steps size={todayEvents.length > 11 ? 'small' : 'default'} progressDot current={currentClass} direction="vertical">
                 {todayEvents.map((event, index) => {
-                    if (event.show){return (<Step key={event.turn} title={event.subject} description={event.time} />)}
+                    if (event.show) { return (<Step key={event.turn} title={event.subject} description={event.time} />) }
                 }
                 )}
-                </Steps>
-            </Card>
+            </Steps>
+        </Card>
     );
 };
 

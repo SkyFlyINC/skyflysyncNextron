@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Row, Col, Empty, Dropdown, Slider, Space, Flex, ConfigProvider, List, Alert, Divider } from 'antd';
 import Layout from './layout';
 import { DownOutlined } from '@ant-design/icons';
+import { ClientPacks } from '../../../types';
 
 const HomeworkPage = () => {
-    const [homeworkData, setHomeworkData] = useState([]);
+    const [homeworkData, setHomeworkData] = useState<ClientPacks.HomeworkMessage[]>([]);
     const [fontSize, setFontSize] = useState(30); // 初始字体大小
 
     useEffect(() => {
-        window.ipc.invoke('getHomeworkData').then((data) => {
+        window.ipc.invoke('getHomeworkData').then((data:ClientPacks.HomeworkMessage[]) => {
             setHomeworkData(data);
         });
 
@@ -69,12 +70,12 @@ const HomeworkPage = () => {
             renderItem={(homework) => (
                 <List.Item>
                     <Card
-                        extra={<Alert message={homework.endTime?homework.endTime + "截止":"今天截止"} type="info" />}
+                        extra={<Alert message={homework.dueDate?homework.dueDate + "截止":"今天截止"} type="info" />}
                         type="inner"
                         title={`${homework.subject}`}
                         style={{ marginBottom: '16px' }}
                     >
-                        <p style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: `${fontSize}px` }}>{homework.content}</p>
+                        <p style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap', fontSize: `${fontSize}px` }}>{homework.details}</p>
                         <Divider></Divider>
                         <div style={{ marginTop: 'auto', fontSize: `15px` }}>{"布置者 : " + homework.sender + "老师"}</div>
                     </Card>

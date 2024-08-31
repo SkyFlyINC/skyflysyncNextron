@@ -19,16 +19,16 @@ export const Layout = ({children,}: {
             setNetworkState(state);
         })
         });
-        window.ipc.on('alert', (event, message) => {
-            alert(message);
+        window.ipc.on('alert', (event:string) => {
+            alert(event)
         });
     }, []);
     const handleMinimize = () => {
-        window.ipc.send('minimize-window',null);
+        window.ipc.send('minimizeWindow',null);
     };
 
     const handleClose = () => {
-        window.ipc.send('close-window',null);
+        window.ipc.send('closeWindow',null);
     };
 
     return (

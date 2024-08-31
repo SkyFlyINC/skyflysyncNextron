@@ -15,13 +15,15 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.3",
     "@mui/material": "^5.15.3",
+    "@types/ws": "^8.5.11",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
-    "react-draggable": "^4.4.6"
+    "react-draggable": "^4.4.6",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@types/node": "^18.11.18",
+    "@types/node": "^20.14.12",
     "@types/react": "^18.0.26",
     "antd": "5.12.8",
     "electron": "^26.2.2",
@@ -30,6 +32,6 @@
     "nextron": "^8.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.5.4"
   }
 }

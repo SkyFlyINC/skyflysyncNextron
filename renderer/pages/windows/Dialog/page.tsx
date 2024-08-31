@@ -2,16 +2,17 @@
 import React, {useEffect, useState} from 'react';
 import { Card, Alert, Flex } from 'antd';
 import Layout from '../layout';
+import { ClientPacks, ServerPacks } from '../../../../types';
 
 const WarningCard = () => {
     const [title,setTitle] = useState("加载中...");
     const [content,setContent] = useState(" ");
     const [sender,setSender] = useState(" ");
     useEffect(() => {
-        window.ipc.invoke('getLastMessage').then((data)=>{
-            setContent(data.content.data.content)
-            setTitle(data.content.data.title)
-            setSender(data.content.data.sender)
+        window.ipc.invoke('getDialogMessage').then((data:ClientPacks.AlertMessage)=>{
+            setContent(data.message)
+            setTitle(data.title)
+            setSender(data.sender)
         })
     }, []);
     return (
