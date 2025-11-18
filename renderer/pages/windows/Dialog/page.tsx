@@ -16,7 +16,7 @@ const WarningCard = () => {
         })
     }, []);
     return (
-        <Layout>
+        <Layout title='弹窗提醒'>
             
             <Flex justify='center' align='center'><Card title={title} bordered={true} style={{width: 500}}>{content}</Card>
                 </Flex>

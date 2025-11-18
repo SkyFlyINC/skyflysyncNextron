@@ -1,5 +1,6 @@
 import { IpcMainInvokeEvent } from 'electron';
-import * as fs from 'fs';
+import Store from 'electron-store';
+import WebSocket from 'ws';
 
 export namespace ClientPacks {
 
@@ -65,7 +66,7 @@ export namespace ClientPacks {
   }
 
   export interface TimerTaskMessage extends Task{
-    
+
   }
 
   export interface HomeworkMessage{
@@ -209,8 +210,8 @@ export namespace ServerPacks {
     senderId: number;
     receiverId: number;
     time: number;
-    messageBody: string;
-    messageinterface: number;
+    messageBody:  string;
+    messagetype: number;
   };
 
   export interface CreateGroupRequest {
@@ -413,6 +414,7 @@ export interface User {
       messageEvent: string;
       userStateEvent: string;
       getOfflineMessage: string;
+      deleteOfflineMessage: string;
       getMessagesWithUser: string;
       changeSettings: string;
       changeAvatar: string;
@@ -454,25 +456,29 @@ export interface User {
       defaultHomePageData: object;
     }
   
-  
-  
     export type Config = {
-      isScheduleShow: boolean,
-      allowAlert: boolean,
-      useTasks: boolean,
-      autoDownloadFiles: boolean,
-      fileSavingPath: string,
-      autoShowHomework: boolean,
+      isScheduleShow: boolean;
+      allowAlert: boolean;
+      useTasks: boolean;
+      autoDownloadFiles: boolean;
+      fileSavingPath: string;
+      autoShowHomework: boolean;
       port: string;
       rotes: Rotes;
       userSettings: UserSettings;
       serverCommands: ServerCommands;
       clientCommands: ClientCommands;
-    }
+    };
+  
+    let ConfigName = 'appConfig';
+  
+    const store = new Store<Config>({
+      name: ConfigName,
+      defaults: getDefaultConfig()
+    });
   
     export function getDefaultConfig(): Config {
       return {
-  
         isScheduleShow: true,
         allowAlert: true,
         useTasks: true,
@@ -491,7 +497,7 @@ export interface User {
         userSettings: {
           defaultAvatar: 'http://127.0.0.1',
           defaultSettings: {},
-          defaultPermission: 1,  // Replace with the appropriate constant or value
+          defaultPermission: 1, // Replace with the appropriate constant or value
           defaultFriendList: [1, 2],
           defaultGroupList: [3, 4],
           defaultNote: '暂无签名',
@@ -517,6 +523,7 @@ export interface User {
           messageEvent: 'messageEvent',
           userStateEvent: 'userStateEvent',
           getOfflineMessage: 'getOfflineMessage',
+          deleteOfflineMessage: 'deleteOfflineMessage',
           getMessagesWithUser: 'getMessagesWithUser',
           changeSettings: 'changeSettings',
           changeAvatar: 'changeAvatar',
@@ -551,42 +558,45 @@ export interface User {
       return value === undefined || value === null || value === '';
     }
   
-    export function checkAndFillMissingFields(target: Record<string, any>, source: Record<string, any>): void {
+    export function checkAndFillMissingFields(
+      target: Record<string, any>,
+      source: Record<string, any>
+    ): void {
       for (const key in source) {
         if (!target.hasOwnProperty(key) || isEmptyValue(target[key])) {
           target[key] = source[key];
-        } else if (typeof target[key] === 'object' && typeof source[key] === 'object') {
+        } else if (
+          typeof target[key] === 'object' &&
+          typeof source[key] === 'object'
+        ) {
           checkAndFillMissingFields(target[key], source[key]);
         }
       }
     }
   
-    function writeConfigToFile(filename: string, config: Config): void {
-      const configJson = JSON.stringify(config, null, 2);
-      fs.writeFileSync(filename, configJson, 'utf-8');
+    export function saveConfig(config: Config) {
+      store.store = config;
     }
   
-    export function loadConfig(filename: string): Config {
-      let config: Config;
-      try {
-        const data = fs.readFileSync(filename, 'utf-8');
-        config = JSON.parse(data);
-      } catch (error) {
-        console.log('配置文件不存在或读取失败，写入默认配置');
+    export function loadConfig(): Config {
+      let config = store.store;
+  
+      if (!config) {
+        console.log('加载失败，写入默认配置');
         config = getDefaultConfig();
-        writeConfigToFile(filename, config);
+        saveConfig(config);
       }
+  
       return config;
     }
   
-    export function checkConfigIntegrity(filename: string, config: Config): void {
+    export function checkConfigIntegrity(config: Config): void {
       const configMap = structToMap(config);
       const defaultConfigMap = structToMap(getDefaultConfig());
       checkAndFillMissingFields(configMap, defaultConfigMap);
       mapToStruct(configMap, config);
-      writeConfigToFile(filename, config);
+      saveConfig(config);
     }
-  
   }
   
   export enum UserState {
@@ -644,9 +654,10 @@ export interface User {
     closeHomeworkWindow(): void;
     downloadFile(event: Electron.IpcMainInvokeEvent, hashValue: string, filename: string, sender: string): void;
     deleteMessage(event: IpcMainInvokeEvent,messageId: number): boolean;
-    showSignalMessage(event: IpcMainInvokeEvent,message: ClientPacks.MessageItem): void;
+    showSingleMessage(event: IpcMainInvokeEvent,message: ClientPacks.MessageItem): void;
     nextjsMessage(event: IpcMainInvokeEvent,data: any): void; // 根据 data 的类型定义
     minimizeWindow(): void;
     closeWindow(): void;
+    toggleFullscreen(event: IpcMainInvokeEvent, data: boolean):void;
   }
   }

@@ -1,0 +1,72 @@
+{
+  "isScheduleShow": true,
+  "allowAlert": true,
+  "useTasks": true,
+  "autoDownloadFiles": true,
+  "port": "8080",
+  "fileSavingPath": "./downloads/",
+  "autoShowHomework": true,
+  "rotes": {
+    "registerServiceRote": "/register",
+    "requestServiceRote": "/request",
+    "loginServiceRote": "/login",
+    "webSocketServiceRote": "/ws",
+    "uploadServiceRote": "/upload",
+    "downloadServiceRote": "/download"
+  },
+  "userSettings": {
+    "defaultAvatar": "http://127.0.0.1",
+    "defaultSettings": {},
+    "defaultPermission": 1,
+    "defaultFriendList": [
+      1,
+      2
+    ],
+    "defaultGroupList": [
+      3,
+      4
+    ],
+    "defaultNote": "暂无签名",
+    "defaultHomePageData": {}
+  },
+  "serverCommands": {
+    "login": "login",
+    "register": "register",
+    "heart": "heart",
+    "checkUserOnlineState": "checkUserOnlineState",
+    "sendUserMessage": "sendUserMessage",
+    "sendGroupMessage": "sendGroupMessage",
+    "messageFromUser": "messageFromUser",
+    "messageFromGroup": "messageFromGroup",
+    "broadcastMessage": "BroadcastMessage",
+    "addFriend": "addFriend",
+    "deleteFriend": "deleteFriend",
+    "changeFriendSettings": "changeFriendSettings",
+    "createGroup": "createGroup",
+    "breakGroup": "breakGroup",
+    "changeGroupSettings": "changeGroupSettings",
+    "getUserData": "getUserData",
+    "messageEvent": "messageEvent",
+    "userStateEvent": "userStateEvent",
+    "getOfflineMessage": "getOfflineMessage",
+    "deleteOfflineMessage": "deleteOfflineMessage",
+    "getMessagesWithUser": "getMessagesWithUser",
+    "changeSettings": "changeSettings",
+    "changeAvatar": "changeAvatar",
+    "logout": "logout",
+    "changePassword": "changePassword",
+    "addUserToGroup": "addUserToGroup",
+    "requestToBeAddedAsFriend": "requestToBeAddedAsFriend",
+    "requestToBeAddedIntoGroup": "requestToBeAddedIntoGroup"
+  },
+  "clientCommands": {
+    "alertMessage": "alertMessage",
+    "ordinaryMessage": "ordinaryMessage",
+    "classUpdateMessage": "classUpdateMessage",
+    "remoteExecuteMessage": "remoteExecuteMessage",
+    "fileMessage": "fileMessage",
+    "timerTaskMessage": "timerTaskMessage",
+    "homeworkMessage": "homeworkMessage",
+    "getMessages": "getMessages"
+  }
+}
